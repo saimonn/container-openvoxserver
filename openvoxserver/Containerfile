@@ -1,10 +1,11 @@
 ARG UBUNTU_VERSION=24.04
+ARG GPGME_VERSION=2.0.24
 FROM ubuntu:${UBUNTU_VERSION} AS builder
 
 ARG BUILD_PKGS="ruby3.2-dev gcc make cmake pkg-config libssl-dev libc6-dev libssh2-1-dev libgpgme-dev libassuan-dev libgpg-error-dev"
 ARG R10K_VERSION=5.0.0
 ARG RUGGED_VERSION=1.9.0
-ARG GPGME_VERSION=2.0.24
+ARG GPGME_VERSION
 ARG HIERA_EYAML_GPG_VERSION=0.7.4
 
 RUN apt-get update && \
@@ -27,7 +28,7 @@ ARG OPENVOXDB_VERSION=8.9.0-1+ubuntu${UBUNTU_VERSION}
 ARG OPENVOX_USER_UID=999
 ARG OPENVOX_USER_GID=999
 ARG OPENVOX_RELEASE_PACKAGE=openvox${OPENVOX_RELEASE}-release-ubuntu${UBUNTU_VERSION}.deb
-ARG GPGME_VERSION=2.0.24
+ARG GPGME_VERSION
 
 LABEL org.label-schema.maintainer="Voxpupuli Team <voxpupuli@groups.io>" \
       org.label-schema.vendor="OpenVoxProject" \
