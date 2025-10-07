@@ -46,7 +46,7 @@ jobs:
           build_context: openvoxserver
           buildfile: openvoxserver/Containerfile
           tags: |
-            ghcr.io/openvoxproject/openvoxserver:${{ matrix.release }}-${{ github.sha }}-x86_64
+            ghcr.io/${{ github.actor }}/openvoxserver:${{ matrix.release }}-${{ github.sha }}-x86_64
 
   build-ARM-container:
     runs-on: ubuntu-24.04-arm
@@ -71,7 +71,7 @@ jobs:
           build_context: openvoxserver
           buildfile: openvoxserver/Containerfile
           tags: |
-            ghcr.io/openvoxproject/openvoxserver:${{ matrix.release }}-${{ github.sha }}-arm64
+            ghcr.io/${{ github.actor }}/openvoxserver:${{ matrix.release }}-${{ github.sha }}-arm64
 
   create-multi-arch-manifests:
     runs-on: ubuntu-latest
@@ -104,14 +104,14 @@ jobs:
 
       - name: Create multi arch manifests
         run: |
-          docker buildx imagetools create -t ghcr.io/openvoxproject/openvoxserver:${{ steps.extract_version.outputs.version }}-${{ github.ref_name }} \
-            ghcr.io/openvoxproject/openvoxserver:${{ matrix.release }}-${{ github.sha }}-arm64 \
-            ghcr.io/openvoxproject/openvoxserver:${{ matrix.release }}-${{ github.sha }}-x86_64
+          docker buildx imagetools create -t ghcr.io/${{ github.actor }}/openvoxserver:${{ steps.extract_version.outputs.version }}-${{ github.ref_name }} \
+            ghcr.io/${{ github.actor }}/openvoxserver:${{ matrix.release }}-${{ github.sha }}-arm64 \
+            ghcr.io/${{ github.actor }}/openvoxserver:${{ matrix.release }}-${{ github.sha }}-x86_64
 
-          docker buildx imagetools create -t ghcr.io/openvoxproject/openvoxserver:${{ steps.extract_version.outputs.version }}-latest \
-            ghcr.io/openvoxproject/openvoxserver:${{ matrix.release }}-${{ github.sha }}-arm64 \
-            ghcr.io/openvoxproject/openvoxserver:${{ matrix.release }}-${{ github.sha }}-x86_64
+          docker buildx imagetools create -t ghcr.io/${{ github.actor }}/openvoxserver:${{ steps.extract_version.outputs.version }}-latest \
+            ghcr.io/${{ github.actor }}/openvoxserver:${{ matrix.release }}-${{ github.sha }}-arm64 \
+            ghcr.io/${{ github.actor }}/openvoxserver:${{ matrix.release }}-${{ github.sha }}-x86_64
 
-          docker buildx imagetools create -t ghcr.io/openvoxproject/openvoxserver:latest \
-            ghcr.io/openvoxproject/openvoxserver:${{ matrix.release }}-${{ github.sha }}-arm64 \
-            ghcr.io/openvoxproject/openvoxserver:${{ matrix.release }}-${{ github.sha }}-x86_64
+          docker buildx imagetools create -t ghcr.io/${{ github.actor }}/openvoxserver:latest \
+            ghcr.io/${{ github.actor }}/openvoxserver:${{ matrix.release }}-${{ github.sha }}-arm64 \
+            ghcr.io/${{ github.actor }}/openvoxserver:${{ matrix.release }}-${{ github.sha }}-x86_64
