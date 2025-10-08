@@ -1,21 +1,26 @@
 ARG UBUNTU_VERSION=24.04
 FROM ubuntu:${UBUNTU_VERSION} AS builder
 
-ARG BUILD_PKGS="ruby3.2-dev gcc make cmake pkg-config libssl-dev libc6-dev libssh2-1-dev"
+ARG BUILD_PKGS="ruby3.2-dev gcc make cmake pkg-config libssl-dev libc6-dev libssh2-1-dev gpg"
 ARG R10K_VERSION=5.0.0
 ARG RUGGED_VERSION=1.9.0
+ARG RUBY_GPG2_VERSION=0.12.0
+ARG HIERA_EYAML_GPG_VERSION=0.7.4
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends $BUILD_PKGS && \
     gem install --no-doc r10k -v $R10K_VERSION && \
-    gem install --no-doc rugged -v $RUGGED_VERSION -- --with-ssh
+    gem install --no-doc rugged -v $RUGGED_VERSION -- --with-ssh && \
+    gem install --no-doc ruby_gpg2 -v $RUBY_GPG2_VERSION  && \
+    gem install --no-doc hiera-eyaml-gpg -v $HIERA_EYAML_GPG_VERSION && \
+    rm -rf /var/lib/apt/lists/*
 
 FROM ubuntu:${UBUNTU_VERSION} AS final
 
 ARG vcs_ref
 ARG build_type
 ARG build_date
-ARG PACKAGES="git netbase openssh-client libssh2-1 dumb-init ruby3.2"
+ARG PACKAGES="git netbase openssh-client libssh2-1 dumb-init ruby3.2 gpg"
 ARG UBUNTU_VERSION=24.04
 ARG OPENVOX_RELEASE=8
 ARG OPENVOXSERVER_VERSION=8.8.0-1+ubuntu${UBUNTU_VERSION}
